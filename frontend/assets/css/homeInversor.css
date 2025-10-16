@@ -1,0 +1,134 @@
+
+/* Logo del navbar */
+.logo {
+	height: 40px;
+	width: auto;
+}
+
+
+/* Layout principal: header, main y footer */
+#contenedor-padre{
+	display: grid;
+	min-height: 100vh;
+	grid-template-rows: auto 1fr auto;
+}
+
+
+/* Contenedor principal del swipe (centra la pila de tarjetas y los botones) */
+.swipe-container {
+	position: relative;
+	width: 350px;
+	max-width: 90vw;
+	margin: 40px auto 0 auto;
+	height: 420px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+
+/* Pila de tarjetas (stack visual) */
+#card-stack {
+	position: relative;
+	width: 100%;
+	height: 370px;
+}
+
+
+/* Tarjeta individual (emprendimiento) */
+.swipe-card {
+	position: absolute;
+	width: 100%;
+	height: 340px;
+	background: #fff;
+	border-radius: 16px;
+	box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 24px;
+	transition: box-shadow 0.2s, transform 0.3s;
+	user-select: none;
+	touch-action: pan-x;
+}
+
+
+/* Título de la tarjeta */
+.swipe-card h4 {
+	margin-bottom: 12px;
+}
+
+
+/* Sombra más suave para la última tarjeta */
+.swipe-card:last-child {
+	box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+
+/* Contenedor de los botones de acción (like/dislike) */
+.swipe-actions {
+	margin-top: 18px;
+	display: flex;
+	gap: 32px;
+}
+
+
+/* Botones circulares de like/dislike */
+#like-btn, #dislike-btn {
+	width: 60px;
+	height: 60px;
+	font-size: 2rem;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+	flex-direction: column;
+	padding: 0;
+}
+
+/* Ícono grande dentro del botón */
+#like-btn .btn-icon, #dislike-btn .btn-icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 32px;
+	margin-bottom: 2px;
+}
+
+/* Texto debajo del ícono */
+#like-btn span, #dislike-btn span {
+	width: 100%;
+	text-align: center;
+	font-size: 1.1rem;
+	margin-top: 0;
+}
+
+
+/* Animaciones de swipe y feedback visual */
+.swipe-card.swiping {
+	transition: none;
+	box-shadow: 0 12px 32px rgba(0,0,0,0.18);
+}
+.swipe-card.liked {
+	animation: swipeRight 0.4s forwards;
+}
+.swipe-card.disliked {
+	animation: swipeLeft 0.4s forwards;
+}
+
+@keyframes swipeRight {
+	to {
+		transform: translateX(500px) rotate(25deg);
+		opacity: 0;
+	}
+}
+@keyframes swipeLeft {
+	to {
+		transform: translateX(-500px) rotate(-25deg);
+		opacity: 0;
+	}
+}
