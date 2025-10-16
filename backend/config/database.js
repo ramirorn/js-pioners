@@ -11,6 +11,3 @@ export const connectDB = async () => {
     }
 };
 
-export const testDB = async ()=>{
-    
-}
