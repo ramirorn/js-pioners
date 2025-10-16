@@ -24,6 +24,7 @@ const UserScehma = new Schema(
             type: String,
             required: [true, "La contraseña es requerida"],
             minlength: [6, "La contraseña debe tener al menos 6 caracteres"],
+        },
             rol: {
                 type: String,
                 enum: ["Entrepreneur", "Investor", "Admin"],
@@ -31,7 +32,6 @@ const UserScehma = new Schema(
                 required: true,
             },
         },
-    },
     {
         versionKey: false,
     }
