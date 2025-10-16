@@ -1,0 +1,10 @@
+.logo {
+    height: 40px;
+    width: auto;
+}
+
+#contenedor-padre{
+    display: grid;
+    min-height: 100vh;
+    grid-template-rows: auto 1fr auto;
+}
