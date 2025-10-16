@@ -12,14 +12,31 @@ const ProjectSchema = new Schema(
             required: true,
             minLength: 50,
         },
+        imagen_path: {
+            type: String,
+            default: '',
+            required: true,
+        },
+        direccion: {
+            type: String,
+            trim: true,
+            required: true
+        },
+        aplicacion_web_url: {
+            type: String,
+            trim: true,
+            match: [/^(http|https):\/\/[^ "]+$/, "Ingresa una URL válida."],
+            default: '',
+            required: true,
+        },
         owner: {
             type: Schema.Types.ObjectId,
             ref: "User",
             required: true,
         }
     },
-    {   
-        timestamps:true,
+    {
+        timestamps: true,
         versionKey: false
     }
 );

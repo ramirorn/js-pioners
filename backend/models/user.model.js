@@ -25,14 +25,39 @@ const UserScehma = new Schema(
             required: [true, "La contraseña es requerida"],
             minlength: [6, "La contraseña debe tener al menos 6 caracteres"],
         },
-            rol: {
-                type: String,
-                enum: ["Entrepreneur", "Investor", "Admin"],
-                default: "Investor",
-                required: true,
-            },
+        rol: {
+            type: String,
+            enum: ["Entrepreneur", "Investor", "Admin"],
+            default: "Investor",
+            required: true,
         },
+        nombre: {
+            type: String,
+            required: function () { return this.rol === "Entrepreneur" || this.rol === "Investor" },
+            trim: true,
+        },
+        apellido: {
+            type: String,
+            required: function () { return this.rol === "Entrepreneur" || this.rol === "Investor" },
+            trim: true
+        },
+        dni: {
+            type: String,
+            required: function () { return this.rol === "Entrepreneur" || this.rol === "Investor" },
+            trim: true
+        },
+        empresa: {
+            type: String,
+            required: function () { return this.rol === "Investor" }
+        },
+        projects: [{
+            type: Schema.Types.ObjectId,
+            ref: "Projects",
+            required:  function () { return this.rol === "Entrepreneur" }
+        }],
+    },
     {
+        timestamps: true,
         versionKey: false,
     }
 );
