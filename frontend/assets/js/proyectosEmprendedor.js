@@ -1,0 +1,52 @@
+const empresasEjemplo = [
+  {
+    id: 1,
+    nombre: "RocketJS",
+    descripcion: "Plataforma de lanzamientos para proyectos JavaScript.",
+    imagen: "../assets/img/JS_PIONERS_LOGO-removebg-preview.png",
+    intersado: false, // No guardado
+    direccion: "Calle Falsa 123",
+    telefono: "555-1234",
+    email: "juan.perez@example.com",
+  },
+  {
+    id: 2,
+    nombre: "PixelCode",
+    descripcion: "Desarrollo de videojuegos retro con JS.",
+    imagen: "../assets/img/JS_PIONERS_LOGO-removebg-preview.png",
+    interado: false,
+    direccion: "Avenida Siempre Viva 456",
+    telefono: "555-5678",
+    email: "ana.gomez@example.com",
+  },
+  {
+    id: 3,
+    nombre: "GreenTech",
+    descripcion: "Soluciones ecológicas con tecnología web.",
+    imagen: "../assets/img/JS_PIONERS_LOGO-removebg-preview.png",
+    interado: true, // Guardado
+    direccion: "Boulevard Verde 789",
+    telefono: "555-9012",
+    email: "carlos.ruiz@example.com",
+  },
+  {
+    id: 4,
+    nombre: "EduJS",
+    descripcion: "Educación online para programadores JS.",
+    imagen: "../assets/img/JS_PIONERS_LOGO-removebg-preview.png",
+    interado: false,
+    direccion: "Calle del Saber 101",
+    telefono: "555-3456",
+    email: "laura.martinez@example.com",
+  },
+  {
+    id: 5,
+    nombre: "FinanCode",
+    descripcion: "Fintech para gestión financiera en startups.",
+    imagen: "../assets/img/JS_PIONERS_LOGO-removebg-preview.png",
+    interado: true,
+    direccion: "Avenida Financiera 202",
+    telefono: "555-7890",
+    email: "miguel.torres@example.com",
+  },
+];

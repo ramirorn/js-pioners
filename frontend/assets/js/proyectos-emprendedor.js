@@ -1,79 +1,57 @@
 // =============================
-// Array de ejemplo con empresas
-// Cada empresa tiene: id, nombre, descripcion, imagen y si fue guardada (interado)
+// Array de ejemplo de emprendimientos del emprendedor
 // =============================
-const empresasEjemplo = [
+const proyectosEmprendedor = [
   {
     id: 1,
     nombre: "RocketJS",
     descripcion: "Plataforma de lanzamientos para proyectos JavaScript.",
     imagen: "../assets/img/JS_PIONERS_LOGO-removebg-preview.png",
-    intersado: false, // No guardado
     direccion: "Calle Falsa 123",
     telefono: "555-1234",
-    dueño: "Juan Pérez",
     email: "juan.perez@example.com",
+    aprobado: true, // Proyecto aprobado
   },
   {
     id: 2,
     nombre: "PixelCode",
     descripcion: "Desarrollo de videojuegos retro con JS.",
     imagen: "../assets/img/JS_PIONERS_LOGO-removebg-preview.png",
-    interado: false,
     direccion: "Avenida Siempre Viva 456",
     telefono: "555-5678",
-    dueño: "Ana Gómez",
     email: "ana.gomez@example.com",
+    aprobado: false, // Proyecto pendiente
   },
   {
     id: 3,
     nombre: "GreenTech",
     descripcion: "Soluciones ecológicas con tecnología web.",
     imagen: "../assets/img/JS_PIONERS_LOGO-removebg-preview.png",
-    interado: true, // Guardado
     direccion: "Boulevard Verde 789",
     telefono: "555-9012",
-    dueño: "Carlos Ruiz",
     email: "carlos.ruiz@example.com",
+    aprobado: true,
   },
   {
     id: 4,
     nombre: "EduJS",
     descripcion: "Educación online para programadores JS.",
     imagen: "../assets/img/JS_PIONERS_LOGO-removebg-preview.png",
-    interado: false,
     direccion: "Calle del Saber 101",
     telefono: "555-3456",
-    dueño: "Laura Martínez",
     email: "laura.martinez@example.com",
-  },
-  {
-    id: 5,
-    nombre: "FinanCode",
-    descripcion: "Fintech para gestión financiera en startups.",
-    imagen: "../assets/img/JS_PIONERS_LOGO-removebg-preview.png",
-    interado: true,
-    direccion: "Avenida Financiera 202",
-    telefono: "555-7890",
-    dueño: "Miguel Torres",
-    email: "miguel.torres@example.com",
+    aprobado: false,
   },
 ];
 
 // =============================
-// Filtrar solo los emprendimientos guardados (like)
-// =============================
-const guardados = empresasEjemplo.filter((e) => e.interado);
-
-// =============================
-// Renderizar los guardados en la vista
+// Renderizar los proyectos en la vista
 // =============================
 window.addEventListener("DOMContentLoaded", () => {
-  // Selecciona el elemento <main> donde se mostrarán los guardados
   const main = document.querySelector("main");
   if (!main) return;
 
-  // Crea un contenedor para las cards de guardados
+  // Contenedor de cards
   const contenedor = document.createElement("div");
   contenedor.style.display = "flex";
   contenedor.style.flexDirection = "column";
@@ -81,8 +59,7 @@ window.addEventListener("DOMContentLoaded", () => {
   contenedor.style.margin = "32px auto";
   contenedor.style.maxWidth = "600px";
 
-  // Por cada empresa guardada, crea una card visual
-  guardados.forEach((empresa) => {
+  proyectosEmprendedor.forEach((proyecto) => {
     // Card visual tipo lista horizontal
     const card = document.createElement("div");
     card.style.display = "flex";
@@ -97,17 +74,25 @@ window.addEventListener("DOMContentLoaded", () => {
 
     // Imagen del emprendimiento
     const img = document.createElement("img");
-    img.src = empresa.imagen;
-    img.alt = empresa.nombre;
+    img.src = proyecto.imagen;
+    img.alt = proyecto.nombre;
     img.style.width = "90px";
     img.style.height = "70px";
     img.style.objectFit = "contain";
     img.style.borderRadius = "12px";
 
-    // Nombre y descripción del emprendimiento
+    // Nombre, descripción y estado de aprobación
     const info = document.createElement("div");
     info.style.flex = "1";
-    info.innerHTML = `<h3 style="margin:0 0 8px 0;">${empresa.nombre}</h3><p style="margin:0;">${empresa.descripcion}</p>`;
+    info.innerHTML = `
+      <h3 style="margin:0 0 8px 0;">${proyecto.nombre}</h3>
+      <p style="margin:0;">${proyecto.descripcion}</p>
+      <span style="display:inline-block; margin-top:8px; padding:4px 12px; border-radius:8px; font-size:0.95em; background:${
+        proyecto.aprobado ? "#d1e7dd" : "#f8d7da"
+      }; color:${proyecto.aprobado ? "#0f5132" : "#842029"};">
+        ${proyecto.aprobado ? "Aprobado" : "Pendiente"}
+      </span>
+    `;
 
     // Agrega imagen y texto a la card
     card.appendChild(img);
@@ -146,15 +131,21 @@ window.addEventListener("DOMContentLoaded", () => {
       if (!modalBody) return;
       modalBody.innerHTML = `
         <div style='display:flex; gap:32px; align-items:center;'>
-          <img src='${empresa.imagen}' alt='${empresa.nombre}' style='width:120px; height:90px; object-fit:contain; border-radius:14px;'>
+          <img src='${proyecto.imagen}' alt='${
+        proyecto.nombre
+      }' style='width:120px; height:90px; object-fit:contain; border-radius:14px;'>
           <div>
-            <h3>${empresa.nombre}</h3>
-            <p>${empresa.descripcion}</p>
+            <h3>${proyecto.nombre}</h3>
+            <p>${proyecto.descripcion}</p>
             <ul style='list-style:none; padding:0; margin:0;'>
-              <li><strong>Dueño:</strong> ${empresa.dueño}</li>
-              <li><strong>Dirección:</strong> ${empresa.direccion}</li>
-              <li><strong>Teléfono:</strong> ${empresa.telefono}</li>
-              <li><strong>Email:</strong> ${empresa.email}</li>
+              <li><strong>Dirección:</strong> ${proyecto.direccion}</li>
+              <li><strong>Teléfono:</strong> ${proyecto.telefono}</li>
+              <li><strong>Email:</strong> ${proyecto.email}</li>
+              <li><strong>Estado:</strong> <span style='padding:2px 10px; border-radius:6px; background:${
+                proyecto.aprobado ? "#d1e7dd" : "#f8d7da"
+              }; color:${proyecto.aprobado ? "#0f5132" : "#842029"};'>${
+        proyecto.aprobado ? "Aprobado" : "Pendiente"
+      }</span></li>
             </ul>
           </div>
         </div>
@@ -165,15 +156,14 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Si no hay guardados, muestra un mensaje amigable
-  if (guardados.length === 0) {
+  // Si no hay proyectos, muestra un mensaje amigable
+  if (proyectosEmprendedor.length === 0) {
     const msg = document.createElement("p");
-    msg.textContent = "No tienes emprendimientos guardados.";
+    msg.textContent = "No tienes emprendimientos creados.";
     msg.style.textAlign = "center";
     msg.style.marginTop = "48px";
     contenedor.appendChild(msg);
   }
 
-  // Agrega el contenedor al main
   main.appendChild(contenedor);
 });
