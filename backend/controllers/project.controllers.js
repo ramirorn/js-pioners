@@ -63,3 +63,5 @@ export const deleteProject = async (req, res) => {
         });
     }
 }
+
+export const likeProject = async(req , res) => {}

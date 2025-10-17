@@ -38,7 +38,7 @@ const ProjectSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: "User",
         }],
-        no_interesado: [{
+        interesado: [{
             type: Schema.Types.ObjectId,
             ref: "User",
         }],
