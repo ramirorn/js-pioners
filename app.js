@@ -4,20 +4,21 @@ import "dotenv/config";
 import { connectDB } from "./backend/config/database.js";
 import { routes } from "./backend/routes/index.js";
 import cookieParser from "cookie-parser";
-
+import cors from "cors";
 // Variables
 const app = express();
 const PORT = process.env.PORT;
 
 // Middlewares
 app.use(express.json());
-app.use(cookieParser())
+app.use(cookieParser());
+app.use(cors());
 
 // Rutas
-app.use("/api", routes)
+app.use("/api", routes);
 
 // Conexion a la base de datos
 app.listen(PORT, async () => {
-    console.log(`🚀 Servidor escuchando en http://localhost:${PORT}`);
-    await connectDB();
+  console.log(`🚀 Servidor escuchando en http://localhost:${PORT}`);
+  await connectDB();
 });

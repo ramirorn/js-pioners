@@ -6,15 +6,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const radioInversor = document.getElementById("inversorRadio");
   const radioEmprendedor = document.getElementById("emprendedorRadio");
   const inputsInversor = document.getElementById("inputs-inversor");
-  const inputsEmprendedor = document.getElementById("inputs-emprendedor");
 
   function mostrarInputs() {
     if (radioInversor && radioInversor.checked) {
       inputsInversor.style.display = "block";
-      inputsEmprendedor.style.display = "none";
     } else if (radioEmprendedor && radioEmprendedor.checked) {
       inputsInversor.style.display = "none";
-      inputsEmprendedor.style.display = "block";
     }
   }
 
@@ -48,46 +45,32 @@ register.addEventListener("click", async (e) => {
   const apellido = document.getElementById("apellido").value;
   const empresa = document.getElementById("empresa").value;
 
-  //emprendedor
-  const dniEmprendedor = document.getElementById("dni-emprendedor").value;
-  const emprendimiento = document.getElementById("emprendimiento").value;
-  const imagen = document.getElementById("imagen-emprendimiento").value;
-  const aplicacionWeb = document.getElementById("aplicacion-web").value;
-  const direccion = document.getElementById("direccion-emprendimiento").value;
+  const data = { username, email, password, dni, role };
 
-  const data = { username, email, password, role };
-
-  console.log(data);
+  // console.log(data);
   //Que guarde los datos segun el tipo de usuario
-  if (role === "inversor") {
-    data.dni = dni;
+  if (role === "Inversor") {
     data.nombre = nombre;
     data.apellido = apellido;
     data.empresa = empresa;
-  } else if (role === "emprendedor") {
-    data.dni = dniEmprendedor;
-    data.emprendimiento = emprendimiento;
-    data.imagen = imagen;
-    data.aplicacionWeb = aplicacionWeb;
-    data.direccion = direccion;
   }
 
   console.log(data);
   // Enviar los datos al servidor
-  const req = await fetch("http://localhost:3000/api/usuarios/register", {
+  const req = await fetch("http://localhost:4000/api/auth/register", {
     method: "POST",
-    body: JSON.stringify(data),
     headers: {
       "Content-type": "application/json",
     },
+    body: JSON.stringify(data),
   });
 
   const res = await req.json();
+  console.log(res);
 
   if (req.ok) {
-    alert(res.message);
-    window.location.replace("index.html");
+    window.location.replace("http://127.0.0.1:5500/frontend/pages/login.html");
   } else {
-    alert(res.message);
+    alert(res.msg);
   }
 });

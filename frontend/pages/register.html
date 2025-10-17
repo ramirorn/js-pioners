@@ -78,6 +78,13 @@
                   id="password"
                   placeholder="Enter your password"
                 />
+                <label for="dni">DNI</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="dni"
+                  placeholder="Enter your DNI"
+                />
 
                 <p>Tipo de usuario</p>
                 <div class="form-check" id="Tipo-de-usuario">
@@ -86,7 +93,7 @@
                     type="radio"
                     name="role"
                     id="inversorRadio"
-                    value="inversor"
+                    value="Inversor"
                   />
                   <label class="form-check-label" for="inversorRadio">
                     Inversor
@@ -98,7 +105,7 @@
                     type="radio"
                     name="role"
                     id="emprendedorRadio"
-                    value="emprendedor"
+                    value="Emprendedor"
                   />
                   <label class="form-check-label" for="emprendedorRadio">
                     Emprendedor
@@ -108,13 +115,6 @@
 
                 <!-- Inversor -->
                 <div id="inputs-inversor" style="display: none">
-                  <label for="dni">DNI</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="dni"
-                    placeholder="Enter your DNI"
-                  />
                   <label for="nombre">Nombre</label>
                   <input
                     type="text"
@@ -138,45 +138,6 @@
                   />
                 </div>
 
-                <!-- Emprendedor -->
-                <div id="inputs-emprendedor" style="display: none">
-                  <label for="dni-emprendedor">DNI</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="dni-emprendedor"
-                    placeholder="Enter your DNI"
-                  />
-                  <label for="emprendimiento" class="form-label"
-                    >Emprendimiento</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="emprendimiento"
-                    placeholder="Nombre del emprendimiento"
-                  />
-                  <label for="imagen-emprendimiento">Imagen</label>
-                  <input
-                    type="file"
-                    class="form-control"
-                    id="imagen-emprendimiento"
-                  />
-                  <label for="direccion-emprendimiento">Direccion</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="direccion-emprendimiento"
-                    placeholder="Enter your direccion"
-                  />
-                  <label for="aplicacion-web">Aplicacion web</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="aplicacion-web"
-                    placeholder="URL de la aplicacion web"
-                  />
-                </div>
                 <button
                   class="btn btn-primary mt-3"
                   id="register"

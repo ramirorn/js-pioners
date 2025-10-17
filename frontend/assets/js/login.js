@@ -9,15 +9,15 @@ registrate.addEventListener("click", (e) => {
 login.addEventListener("click", async (e) => {
   e.preventDefault();
 
-  const username = document.getElementById("username").value;
+  const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
-  console.log(username, password);
+  console.log(email, password);
   try {
-    const req = await fetch("http://localhost:4000/api/login", {
+    const req = await fetch("http://localhost:4000/api/auth/login", {
       method: "POST",
       body: JSON.stringify({
-        username,
+        email,
         password,
       }),
       headers: {
@@ -26,15 +26,27 @@ login.addEventListener("click", async (e) => {
     });
 
     const res = await req.json();
+    console.log(res.data);
 
     if (req.ok) {
       alert(res.message);
       // guardar el token en el localStorage para su posterior uso
+      if (res.data.role === "Inversor") {
+        window.location.replace(
+          "http://127.0.0.1:5500/frontend/pages/home-inversor.html"
+        );
+      } else if (res.data.role === "Emprendedor") {
+        window.location.replace(
+          "http://127.0.0.1:5500/frontend/pages/emprendedor.html"
+        );
+      } else if (res.data.role === "Admin") {
+        window.location.replace(
+          "http://127.0.0.1:5500/frontend/pages/admin.html"
+        );
+      }
       localStorage.setItem("token", res.token);
-      window.location.replace("home.html");
-    } else {
-      alert(res.message);
     }
+    // window.location.replace("home.html");
   } catch (error) {
     console.log(error);
     alert("Ocurrio un error al iniciar sesion");
