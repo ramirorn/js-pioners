@@ -1,5 +1,5 @@
 import { comparePassword, hashPassword } from "../helpers/bcrypt.helper.js";
-import { generateToken, verifyToken } from "../helpers/jwt.helper.js"
+import { generateToken } from "../helpers/jwt.helper.js"
 import { UserModel } from "../models/user.model.js";
 
 
