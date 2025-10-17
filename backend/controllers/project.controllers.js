@@ -98,6 +98,41 @@ export const rejectProject = async (req, res) => {
     }
 }
 
+export const setInterest = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { interesado } = req.body;
+
+        if (typeof interesado !== "boolean") {
+            return res.status(400).json({
+                ok: false,
+                msg: "El campo 'interesado' es requerido y debe ser booleano (true/false)",
+            });
+        }
+
+        const updated = await ProjectModel.findByIdAndUpdate(
+            id,
+            { $set: { interesado } },
+            { new: true }
+        );
+
+        if (!updated) {
+            return res.status(404).json({ ok: false, msg: "Proyecto no encontrado" });
+        }
+
+        return res.status(200).json({
+            ok: true,
+            msg: "Estado de interés actualizado",
+            data: updated,
+        });
+    } catch (err) {
+        return res.status(500).json({
+            ok: false,
+            msg: "Error interno del servidor",
+        });
+    }
+}
+
 export const deleteProject = async (req, res) => {
     const { id } = req.params;
     try {
