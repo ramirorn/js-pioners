@@ -47,8 +47,9 @@ const ProjectSchema = new Schema(
             default: false,
         },
         aprobado: {
-            type: Boolean,
-            default: false,
+            type: String,
+            enum: ['Pendiente','Aprobado', 'Rechazado'],
+            default: 'Pendiente',
         }
     },
     {
