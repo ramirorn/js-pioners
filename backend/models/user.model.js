@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-const UserScehma = new Schema(
+const UserSchema = new Schema(
     {
         username: {
             type: String,
@@ -33,27 +33,38 @@ const UserScehma = new Schema(
         },
         nombre: {
             type: String,
-            required: function () { return this.rol === "Entrepreneur" || this.rol === "Investor" },
+            required: function () {
+                return this.rol === "Entrepreneur" || this.rol === "Investor";
+            },
             trim: true,
         },
         apellido: {
             type: String,
-            required: function () { return this.rol === "Entrepreneur" || this.rol === "Investor" },
+            required: function () {
+                return this.rol === "Entrepreneur" || this.rol === "Investor";
+            },
             trim: true
         },
         dni: {
             type: String,
-            required: function () { return this.rol === "Entrepreneur" || this.rol === "Investor" },
+            required: function () {
+                return this.rol === "Entrepreneur" || this.rol === "Investor";
+            },
             trim: true
         },
         empresa: {
             type: String,
-            required: function () { return this.rol === "Investor" }
+            required: function () {
+                return this.rol === "Investor";
+            },
+            trim: true
         },
         projects: [{
             type: Schema.Types.ObjectId,
-            ref: "Projects",
-            required:  function () { return this.rol === "Entrepreneur" }
+            ref: "Project", 
+            required: function () {
+                return this.rol === "Entrepreneur";
+            }
         }],
     },
     {
@@ -62,4 +73,4 @@ const UserScehma = new Schema(
     }
 );
 
-export const UserModel = model("User", UserScehma);
+export const UserModel = model("User", UserSchema);

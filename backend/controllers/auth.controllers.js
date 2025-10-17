@@ -5,7 +5,30 @@ import { UserModel } from "../models/user.model.js";
 
 export const register = async (req, res) => {
     try {
-        const { username, email, password, rol } = req.body;
+        const { username, email, password, rol, nombre, apellido, dni, empresa } = req.body;
+
+        // Validaciones básicas
+        if (!username || !email || !password || !rol) {
+            return res.status(400).json({
+                ok: false,
+                msg: "username, email, password y rol son requeridos"
+            });
+        }
+
+        // Validaciones por rol según el esquema
+        if ((rol === "Entrepreneur" || rol === "Investor") && (!nombre || !apellido || !dni)) {
+            return res.status(400).json({
+                ok: false,
+                msg: "nombre, apellido y dni son requeridos para Entrepreneur/Investor"
+            });
+        }
+
+        if (rol === "Investor" && !empresa) {
+            return res.status(400).json({
+                ok: false,
+                msg: "empresa es requerida para el rol Investor"
+            });
+        }
 
         const existingUser = await UserModel.findOne({
             $or: [
@@ -27,15 +50,31 @@ export const register = async (req, res) => {
             username,
             email,
             password: hash,
-            rol
+            rol,
+            nombre,
+            apellido,
+            dni,
+            empresa
         });
         return res.status(201)
             .json({ msg: "Usuario registrado correctamente", data: userCreate });
 
     } catch (error) {
-        return res.status(400).json({
+        console.log(error);
+
+        // Manejo específico de validaciones de Mongoose
+        if (error.name === "ValidationError") {
+            const errors = Object.values(error.errors || {}).map(e => e.message);
+            return res.status(400).json({
+                ok: false,
+                msg: "Validación fallida al crear el usuario",
+                errors
+            });
+        }
+
+        return res.status(500).json({
             ok: false,
-            msg: "error interno del servidor"
+            msg: "error interno del servidor register"
         })
     }
 };
