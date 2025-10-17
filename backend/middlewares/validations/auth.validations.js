@@ -20,4 +20,16 @@ export const registerValidation = [
     body('rol')
         .optional()
         .isIn(['user', 'admin']).withMessage('El rol debe ser "user" o "admin"'),
+    body('nombre')
+        .notEmpty().withMessage('El nombre es obligatorio')
+        .isString().withMessage('El nombre debe ser una cadena de caracteres'),
+    body('apellido')
+        .notEmpty().withMessage('El apellido es obligatorio')
+        .isString().withMessage('El apellido debe ser una cadena de caracteres'),
+    body('dni')
+        .notEmpty().withMessage('El DNI es obligatorio')
+        .isString().withMessage('El DNI debe ser una cadena de caracteres'),
+    body('empresa')
+        .optional()
+        .isString().withMessage('La empresa debe ser una cadena de caracteres'),
 ]
