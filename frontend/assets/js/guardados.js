@@ -2,16 +2,8 @@
 // Fetch y renderizar solo los emprendimientos guardados (like)
 // =============================
 window.addEventListener("DOMContentLoaded", async () => {
-  const main = document.querySelector("main");
-  if (!main) return;
-
-  // Contenedor de cards
-  const contenedor = document.createElement("div");
-  contenedor.style.display = "flex";
-  contenedor.style.flexDirection = "column";
-  contenedor.style.gap = "32px";
-  contenedor.style.margin = "32px auto";
-  contenedor.style.maxWidth = "600px";
+  const guardadosList = document.getElementById("guardados-list");
+  if (!guardadosList) return;
 
   // Fetch de proyectos guardados (interesados)
   let guardados = [];
@@ -30,47 +22,33 @@ window.addEventListener("DOMContentLoaded", async () => {
   } catch (error) {
     const msg = document.createElement("p");
     msg.textContent = "No se pudieron cargar los guardados.";
-    msg.style.textAlign = "center";
-    msg.style.marginTop = "48px";
-    contenedor.appendChild(msg);
-    main.appendChild(contenedor);
+    msg.className = "text-center mt-4 text-danger";
+    guardadosList.appendChild(msg);
     return;
   }
 
-  // Por cada empresa guardada, crea una card visual
+  // Por cada empresa guardada, crea una card visual dentro de #guardados-list
   guardados.forEach((empresa) => {
-    // Card visual tipo lista horizontal
+    // Card visual tipo lista horizontal con Bootstrap
     const card = document.createElement("div");
-    card.style.display = "flex";
-    card.style.alignItems = "center";
-    card.style.background = "#fff";
-    card.style.borderRadius = "18px";
-    card.style.boxShadow = "0 4px 16px rgba(0,0,0,0.08)";
-    card.style.padding = "12px 24px";
-    card.style.gap = "24px";
-    card.style.minHeight = "90px";
+    card.className = "card mb-2 shadow-sm border-0";
     card.style.cursor = "pointer";
-
-    // Imagen del emprendimiento
-    const img = document.createElement("img");
-    img.src =
-      empresa.imagen_path ||
-      "../assets/img/JS_PIONERS_LOGO-removebg-preview.png";
-    img.alt = empresa.name;
-    img.style.width = "90px";
-    img.style.height = "70px";
-    img.style.objectFit = "contain";
-    img.style.borderRadius = "12px";
-
-    // Nombre y descripción del emprendimiento
-    const info = document.createElement("div");
-    info.style.flex = "1";
-    info.innerHTML = `<h3 style="margin:0 0 8px 0;">${empresa.name}</h3><p style="margin:0;">${empresa.description}</p>`;
-
-    // Agrega imagen y texto a la card
-    card.appendChild(img);
-    card.appendChild(info);
-    contenedor.appendChild(card);
+    card.innerHTML = `
+      <div class="card-body d-flex align-items-center gap-3">
+        <img src="${
+          empresa.imagen_path ||
+          "../assets/img/JS_PIONERS_LOGO-removebg-preview.png"
+        }" alt="${
+      empresa.name
+    }" class="rounded" style="width:70px; height:56px; object-fit:contain;">
+        <div class="flex-grow-1">
+          <h5 class="mb-1">${empresa.name}</h5>
+          <p class="mb-0 text-muted">${empresa.description}</p>
+        </div>
+        <i class="bi bi-info-circle fs-4 text-primary ms-2"></i>
+      </div>
+    `;
+    guardadosList.appendChild(card);
 
     // --- Modal de detalles ---
     card.addEventListener("click", () => {
@@ -103,17 +81,17 @@ window.addEventListener("DOMContentLoaded", async () => {
       }
       if (!modalBody) return;
       modalBody.innerHTML = `
-        <div style='display:flex; gap:32px; align-items:center;'>
-          <img src='${
+        <div class="d-flex gap-4 align-items-center">
+          <img src="${
             empresa.imagen_path ||
             "../assets/img/JS_PIONERS_LOGO-removebg-preview.png"
-          }' alt='${
+          }" alt="${
         empresa.name
-      }' style='width:120px; height:90px; object-fit:contain; border-radius:14px;'>
+      }" class="rounded" style="width:120px; height:90px; object-fit:contain;">
           <div>
-            <h3>${empresa.name}</h3>
+            <h4>${empresa.name}</h4>
             <p>${empresa.description}</p>
-            <ul style='list-style:none; padding:0; margin:0;'>
+            <ul class="list-unstyled mb-0">
               <li><strong>Dueño:</strong> ${empresa.owner || "-"}</li>
               <li><strong>Dirección:</strong> ${empresa.direccion || "-"}</li>
               <li><strong>Email:</strong> ${empresa.email || "-"}</li>
@@ -131,10 +109,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   if (guardados.length === 0) {
     const msg = document.createElement("p");
     msg.textContent = "No tienes emprendimientos guardados.";
-    msg.style.textAlign = "center";
-    msg.style.marginTop = "48px";
-    contenedor.appendChild(msg);
+    msg.className = "text-center mt-4 text-muted";
+    guardadosList.appendChild(msg);
   }
-
-  main.appendChild(contenedor);
 });

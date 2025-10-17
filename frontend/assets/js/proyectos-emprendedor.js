@@ -39,45 +39,35 @@ window.addEventListener("DOMContentLoaded", async () => {
   }
 
   proyectos.forEach((proyecto) => {
-    // Card visual tipo lista horizontal
+    // Card visual Bootstrap
     const card = document.createElement("div");
-    card.style.display = "flex";
-    card.style.alignItems = "center";
-    card.style.background = "#fff";
-    card.style.borderRadius = "18px";
-    card.style.boxShadow = "0 4px 16px rgba(0,0,0,0.08)";
-    card.style.padding = "12px 24px";
-    card.style.gap = "24px";
-    card.style.minHeight = "90px";
+    card.className = "card mb-3 shadow-sm border-0";
     card.style.cursor = "pointer";
-
-    // Imagen del emprendimiento
-    const img = document.createElement("img");
-    console.log(proyecto.imagen_path)
-    img.src =
-      proyecto.imagen_path ||
-      "../assets/img/JS_PIONERS_LOGO-removebg-preview.png";
-    img.alt = proyecto.name;
-    img.style.width = "90px";
-    img.style.height = "70px";
-    img.style.objectFit = "contain";
-    img.style.borderRadius = "12px";
-
-    // Nombre, descripción y estado de aprobación
-    const info = document.createElement("div");
-    info.style.flex = "1";
-    info.innerHTML = `
-      <h3 style="margin:0 0 8px 0;">${proyecto.name}</h3>
-      <p style="margin:0;">${proyecto.description}</p>
-      <span style="display:inline-block; margin-top:8px; padding:4px 12px; border-radius:8px; font-size:0.95em; background:${proyecto.estado === "Aprobado" ? "#d1e7dd" : "#f8d7da"
-      }; color:${proyecto.estado === "Aprobado" ? "#0f5132" : "#842029"};">
-        ${proyecto.estado}
-      </span>
+    card.innerHTML = `
+      <div class="row g-0 align-items-center">
+        <div class="col-auto">
+          <img src="${
+            proyecto.imagen_path ||
+            "../assets/img/JS_PIONERS_LOGO-removebg-preview.png"
+          }" alt="${
+      proyecto.name
+    }" class="img-fluid rounded-start" style="width:90px; height:70px; object-fit:contain; border-radius:12px;">
+        </div>
+        <div class="col">
+          <div class="card-body">
+            <h5 class="card-title mb-1 fw-bold" style="color:#1976d2;">${
+              proyecto.name
+            }</h5>
+            <p class="card-text mb-2">${proyecto.description}</p>
+            <span class="badge px-3 py-2" style="background:${
+              proyecto.estado === "Aprobado" ? "#d1e7dd" : "#f8d7da"
+            }; color:${
+      proyecto.estado === "Aprobado" ? "#0f5132" : "#842029"
+    }; font-size:1em;">${proyecto.estado}</span>
+          </div>
+        </div>
+      </div>
     `;
-
-    // Agrega imagen y texto a la card
-    card.appendChild(img);
-    card.appendChild(info);
     contenedor.appendChild(card);
 
     // --- Modal de detalles ---
@@ -95,7 +85,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         modal.innerHTML = `
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
-              <div class="modal-header">
+              <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title" id="modalDetalleLabel">Detalles del Emprendimiento</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
               </div>
@@ -111,20 +101,27 @@ window.addEventListener("DOMContentLoaded", async () => {
       }
       if (!modalBody) return;
       modalBody.innerHTML = `
-        <div style='display:flex; gap:32px; align-items:center;'>
-          <img src='${proyecto.imagen_path ||
-        "../assets/img/JS_PIONERS_LOGO-removebg-preview.png"
-        }' alt='${proyecto.name
-        }' style='width:120px; height:90px; object-fit:contain; border-radius:14px;'>
-          <div>
-            <h3>${proyecto.name}</h3>
+        <div class='row align-items-center'>
+          <div class='col-auto'>
+            <img src='${
+              proyecto.imagen_path ||
+              "../assets/img/JS_PIONERS_LOGO-removebg-preview.png"
+            }' alt='${
+        proyecto.name
+      }' class='img-fluid rounded' style='width:120px; height:90px; object-fit:contain; border-radius:14px;'>
+          </div>
+          <div class='col'>
+            <h3 class='fw-bold' style='color:#1976d2;'>${proyecto.name}</h3>
             <p>${proyecto.description}</p>
-            <ul style='list-style:none; padding:0; margin:0;'>
+            <ul class='list-unstyled mb-0'>
               <li><strong>Dirección:</strong> ${proyecto.direccion}</li>
-              <li><strong>Estado:</strong> <span style='padding:2px 10px; border-radius:6px; background:${proyecto.estado === "Aprobado" ? "#d1e7dd" : "#f8d7da"
-        }; color:${proyecto.estado === "Aprobado" ? "#0f5132" : "#842029"
-        };'>${proyecto.estado === "Aprobado" ? "Aprobado" : "Pendiente"
-        }</span></li>
+              <li><strong>Estado:</strong> <span class='badge px-3 py-2' style='background:${
+                proyecto.estado === "Aprobado" ? "#d1e7dd" : "#f8d7da"
+              }; color:${
+        proyecto.estado === "Aprobado" ? "#0f5132" : "#842029"
+      };'>${
+        proyecto.estado === "Aprobado" ? "Aprobado" : "Pendiente"
+      }</span></li>
             </ul>
           </div>
         </div>
