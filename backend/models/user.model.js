@@ -25,7 +25,7 @@ const UserSchema = new Schema(
             required: [true, "La contraseña es requerida"],
             minlength: [6, "La contraseña debe tener al menos 6 caracteres"],
         },
-        rol: {
+        role: {
             type: String,
             enum: ["Entrepreneur", "Investor", "Admin"],
             default: "Investor",
