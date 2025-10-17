@@ -1,39 +1,3 @@
-// --- Render dinámico de tarjetas tipo Tinder ---
-// Este array contiene ejemplos de empresas para mostrar en las tarjetas.
-// Cuando tengas backend, puedes reemplazarlo por datos reales.
-const empresasEjemplo = [
-  {
-    id: 1,
-    nombre: "RocketJS",
-    descripcion: "Plataforma de lanzamientos para proyectos JavaScript.",
-    imagen: "../assets/img/JS_PIONERS_LOGO-removebg-preview.png",
-  },
-  {
-    id: 2,
-    nombre: "PixelCode",
-    descripcion: "Desarrollo de videojuegos retro con JS.",
-    imagen: "../assets/img/JS_PIONERS_LOGO-removebg-preview.png",
-  },
-  {
-    id: 3,
-    nombre: "GreenTech",
-    descripcion: "Soluciones ecológicas con tecnología web.",
-    imagen: "../assets/img/JS_PIONERS_LOGO-removebg-preview.png",
-  },
-  {
-    id: 4,
-    nombre: "EduJS",
-    descripcion: "Educación online para programadores JS.",
-    imagen: "../assets/img/JS_PIONERS_LOGO-removebg-preview.png",
-  },
-  {
-    id: 5,
-    nombre: "FinanCode",
-    descripcion: "Fintech para gestión financiera en startups.",
-    imagen: "../assets/img/JS_PIONERS_LOGO-removebg-preview.png",
-  },
-];
-
 async function fetchEmpresas() {
   // Devuelve el array local de empresas (sin backend)
   return empresasEjemplo;
