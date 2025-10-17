@@ -4,14 +4,15 @@ import { ProjectModel } from "../models/project.model.js";
 export const createProject = async (req, res) => {
   const { userId } = req.user.payload;
 
+  const imagen_path = req.file ? req.file.path : '';
   try {
     // Datos que pasaron las validaciones
     // const validatedData = matchedData(req);
-
     // Creacion del proyecto
     const project = await ProjectModel.create({
       ...req.body,
       owner: userId,
+      imagen_path: imagen_path,
     });
     console.log(project);
     // Respuesta
@@ -21,7 +22,7 @@ export const createProject = async (req, res) => {
       data: project,
     });
   } catch (err) {
-    console.error(err);
+    console.log(err);
     res.status(500).json({
       ok: false,
       msg: "Error interno del servidor",

@@ -14,6 +14,7 @@ import {
   rejectateProject,
 } from "../controllers/project.controllers.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
+import { upload } from "../config/multerConfig.js";
 // import { applyValidations } from "../middlewares/validator.js";
 // import { createProjectValidations, updateProjectValidations, deleteProjectValidations } from "../middlewares/validations/project.validations.js";
 
@@ -23,7 +24,7 @@ export const projectRoutes = Router();
 // projectRoutes.put("/projects/:id", updateProjectValidations, applyValidations, updateProject);
 // projectRoutes.delete("/projects/:id", deleteProjectValidations, applyValidations, deleteProject);
 
-projectRoutes.post("/projects", authMiddleware, createProject);
+projectRoutes.post("/projects", authMiddleware, upload.single('imagen'), createProject);
 projectRoutes.get("/projects/my", authMiddleware, getMyProjects);
 projectRoutes.get("/projects", authMiddleware, getAllProjects);
 // projectRoutes.get("/projects/interesados", authMiddleware, getProjectInterested);
