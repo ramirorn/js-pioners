@@ -36,14 +36,12 @@ register.addEventListener("click", async (e) => {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
-  const tipoUsuarioInput = document.querySelector(
-    'input[name="tipoUsuario"]:checked'
-  );
+  const tipoUsuarioInput = document.querySelector('input[name="role"]:checked');
   if (!tipoUsuarioInput) {
     alert("Por favor selecciona un tipo de usuario.");
     return;
   }
-  const tipoUsuario = tipoUsuarioInput.value;
+  const role = tipoUsuarioInput.value;
   //inversor
   const dni = document.getElementById("dni").value;
   const nombre = document.getElementById("nombre").value;
@@ -57,15 +55,16 @@ register.addEventListener("click", async (e) => {
   const aplicacionWeb = document.getElementById("aplicacion-web").value;
   const direccion = document.getElementById("direccion-emprendimiento").value;
 
-  const data = { username, email, password, tipoUsuario };
+  const data = { username, email, password, role };
 
+  console.log(data);
   //Que guarde los datos segun el tipo de usuario
-  if (tipoUsuario === "inversor") {
+  if (role === "inversor") {
     data.dni = dni;
     data.nombre = nombre;
     data.apellido = apellido;
     data.empresa = empresa;
-  } else if (tipoUsuario === "emprendedor") {
+  } else if (role === "emprendedor") {
     data.dni = dniEmprendedor;
     data.emprendimiento = emprendimiento;
     data.imagen = imagen;
@@ -73,6 +72,7 @@ register.addEventListener("click", async (e) => {
     data.direccion = direccion;
   }
 
+  console.log(data);
   // Enviar los datos al servidor
   const req = await fetch("http://localhost:3000/api/usuarios/register", {
     method: "POST",
