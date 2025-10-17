@@ -29,7 +29,6 @@ login.addEventListener("click", async (e) => {
     console.log(res.data);
 
     if (req.ok) {
-      alert(res.message);
       // guardar el token en el localStorage para su posterior uso
       if (res.data.role === "Inversor") {
         window.location.replace(
