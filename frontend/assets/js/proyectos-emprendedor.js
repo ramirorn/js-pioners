@@ -53,6 +53,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     // Imagen del emprendimiento
     const img = document.createElement("img");
+    console.log(proyecto.imagen_path)
     img.src =
       proyecto.imagen_path ||
       "../assets/img/JS_PIONERS_LOGO-removebg-preview.png";
@@ -68,8 +69,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     info.innerHTML = `
       <h3 style="margin:0 0 8px 0;">${proyecto.name}</h3>
       <p style="margin:0;">${proyecto.description}</p>
-      <span style="display:inline-block; margin-top:8px; padding:4px 12px; border-radius:8px; font-size:0.95em; background:${
-        proyecto.estado === "Aprobado" ? "#d1e7dd" : "#f8d7da"
+      <span style="display:inline-block; margin-top:8px; padding:4px 12px; border-radius:8px; font-size:0.95em; background:${proyecto.estado === "Aprobado" ? "#d1e7dd" : "#f8d7da"
       }; color:${proyecto.estado === "Aprobado" ? "#0f5132" : "#842029"};">
         ${proyecto.estado}
       </span>
@@ -112,24 +112,19 @@ window.addEventListener("DOMContentLoaded", async () => {
       if (!modalBody) return;
       modalBody.innerHTML = `
         <div style='display:flex; gap:32px; align-items:center;'>
-          <img src='${
-            proyecto.imagen_path ||
-            "../assets/img/JS_PIONERS_LOGO-removebg-preview.png"
-          }' alt='${
-        proyecto.name
-      }' style='width:120px; height:90px; object-fit:contain; border-radius:14px;'>
+          <img src='${proyecto.imagen_path ||
+        "../assets/img/JS_PIONERS_LOGO-removebg-preview.png"
+        }' alt='${proyecto.name
+        }' style='width:120px; height:90px; object-fit:contain; border-radius:14px;'>
           <div>
             <h3>${proyecto.name}</h3>
             <p>${proyecto.description}</p>
             <ul style='list-style:none; padding:0; margin:0;'>
               <li><strong>Dirección:</strong> ${proyecto.direccion}</li>
-              <li><strong>Estado:</strong> <span style='padding:2px 10px; border-radius:6px; background:${
-                proyecto.estado === "Aprobado" ? "#d1e7dd" : "#f8d7da"
-              }; color:${
-        proyecto.estado === "Aprobado" ? "#0f5132" : "#842029"
-      };'>${
-        proyecto.estado === "Aprobado" ? "Aprobado" : "Pendiente"
-      }</span></li>
+              <li><strong>Estado:</strong> <span style='padding:2px 10px; border-radius:6px; background:${proyecto.estado === "Aprobado" ? "#d1e7dd" : "#f8d7da"
+        }; color:${proyecto.estado === "Aprobado" ? "#0f5132" : "#842029"
+        };'>${proyecto.estado === "Aprobado" ? "Aprobado" : "Pendiente"
+        }</span></li>
             </ul>
           </div>
         </div>

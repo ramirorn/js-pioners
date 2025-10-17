@@ -32,15 +32,15 @@ function renderCards(empresas) {
   likeBtn.disabled = false;
   dislikeBtn.disabled = false;
   empresasValidas.forEach((empresa, idx) => {
+    console.log(empresa)
     // Crea el elemento de la tarjeta
     const card = document.createElement("div");
     card.className = "swipe-card";
     card.dataset.id = empresa._id;
     // Inserta imagen, nombre y descripción
     card.innerHTML = `
-      <img src="${
-        empresa.imagen_path ||
-        "../assets/img/JS_PIONERS_LOGO-removebg-preview.png"
+      <img src="${empresa.imagen_path ||
+      "../assets/img/JS_PIONERS_LOGO-removebg-preview.png"
       }" alt="logo" style="width:90px; margin-bottom:12px;">
       <h4>${empresa.name}</h4>
       <p>${empresa.description}</p>
@@ -110,9 +110,8 @@ function handleDragMove(e) {
   if (!isDragging || !currentCard) return;
   const x = e.type.startsWith("touch") ? e.touches[0].clientX : e.clientX;
   const deltaX = x - startX;
-  currentCard.style.transform = `translateX(${deltaX}px) rotate(${
-    deltaX / 15
-  }deg)`;
+  currentCard.style.transform = `translateX(${deltaX}px) rotate(${deltaX / 15
+    }deg)`;
 }
 
 function handleDragEnd(e) {
