@@ -1,85 +1,41 @@
 // =============================
-// Array de ejemplo con empresas
-// Cada empresa tiene: id, nombre, descripcion, imagen y si fue guardada (interado)
+// Fetch y renderizar solo los emprendimientos guardados (like)
 // =============================
-const empresasEjemplo = [
-  {
-    id: 1,
-    nombre: "RocketJS",
-    descripcion: "Plataforma de lanzamientos para proyectos JavaScript.",
-    imagen: "../assets/img/JS_PIONERS_LOGO-removebg-preview.png",
-    intersado: false, // No guardado
-    direccion: "Calle Falsa 123",
-    telefono: "555-1234",
-    dueño: "Juan Pérez",
-    email: "juan.perez@example.com",
-  },
-  {
-    id: 2,
-    nombre: "PixelCode",
-    descripcion: "Desarrollo de videojuegos retro con JS.",
-    imagen: "../assets/img/JS_PIONERS_LOGO-removebg-preview.png",
-    interado: false,
-    direccion: "Avenida Siempre Viva 456",
-    telefono: "555-5678",
-    dueño: "Ana Gómez",
-    email: "ana.gomez@example.com",
-  },
-  {
-    id: 3,
-    nombre: "GreenTech",
-    descripcion: "Soluciones ecológicas con tecnología web.",
-    imagen: "../assets/img/JS_PIONERS_LOGO-removebg-preview.png",
-    interado: true, // Guardado
-    direccion: "Boulevard Verde 789",
-    telefono: "555-9012",
-    dueño: "Carlos Ruiz",
-    email: "carlos.ruiz@example.com",
-  },
-  {
-    id: 4,
-    nombre: "EduJS",
-    descripcion: "Educación online para programadores JS.",
-    imagen: "../assets/img/JS_PIONERS_LOGO-removebg-preview.png",
-    interado: false,
-    direccion: "Calle del Saber 101",
-    telefono: "555-3456",
-    dueño: "Laura Martínez",
-    email: "laura.martinez@example.com",
-  },
-  {
-    id: 5,
-    nombre: "FinanCode",
-    descripcion: "Fintech para gestión financiera en startups.",
-    imagen: "../assets/img/JS_PIONERS_LOGO-removebg-preview.png",
-    interado: true,
-    direccion: "Avenida Financiera 202",
-    telefono: "555-7890",
-    dueño: "Miguel Torres",
-    email: "miguel.torres@example.com",
-  },
-];
-
-// =============================
-// Filtrar solo los emprendimientos guardados (like)
-// =============================
-const guardados = empresasEjemplo.filter((e) => e.interado);
-
-// =============================
-// Renderizar los guardados en la vista
-// =============================
-window.addEventListener("DOMContentLoaded", () => {
-  // Selecciona el elemento <main> donde se mostrarán los guardados
+window.addEventListener("DOMContentLoaded", async () => {
   const main = document.querySelector("main");
   if (!main) return;
 
-  // Crea un contenedor para las cards de guardados
+  // Contenedor de cards
   const contenedor = document.createElement("div");
   contenedor.style.display = "flex";
   contenedor.style.flexDirection = "column";
   contenedor.style.gap = "32px";
   contenedor.style.margin = "32px auto";
   contenedor.style.maxWidth = "600px";
+
+  // Fetch de proyectos guardados (interesados)
+  let guardados = [];
+  try {
+    const req = await fetch("http://localhost:4000/api/projects/interesados", {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    const res = await req.json();
+    if (req.ok && res.data) {
+      guardados = res.data;
+    }
+  } catch (error) {
+    const msg = document.createElement("p");
+    msg.textContent = "No se pudieron cargar los guardados.";
+    msg.style.textAlign = "center";
+    msg.style.marginTop = "48px";
+    contenedor.appendChild(msg);
+    main.appendChild(contenedor);
+    return;
+  }
 
   // Por cada empresa guardada, crea una card visual
   guardados.forEach((empresa) => {
@@ -97,8 +53,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
     // Imagen del emprendimiento
     const img = document.createElement("img");
-    img.src = empresa.imagen;
-    img.alt = empresa.nombre;
+    img.src =
+      empresa.imagen_path ||
+      "../assets/img/JS_PIONERS_LOGO-removebg-preview.png";
+    img.alt = empresa.name;
     img.style.width = "90px";
     img.style.height = "70px";
     img.style.objectFit = "contain";
@@ -107,7 +65,7 @@ window.addEventListener("DOMContentLoaded", () => {
     // Nombre y descripción del emprendimiento
     const info = document.createElement("div");
     info.style.flex = "1";
-    info.innerHTML = `<h3 style="margin:0 0 8px 0;">${empresa.nombre}</h3><p style="margin:0;">${empresa.descripcion}</p>`;
+    info.innerHTML = `<h3 style="margin:0 0 8px 0;">${empresa.name}</h3><p style="margin:0;">${empresa.description}</p>`;
 
     // Agrega imagen y texto a la card
     card.appendChild(img);
@@ -146,15 +104,19 @@ window.addEventListener("DOMContentLoaded", () => {
       if (!modalBody) return;
       modalBody.innerHTML = `
         <div style='display:flex; gap:32px; align-items:center;'>
-          <img src='${empresa.imagen}' alt='${empresa.nombre}' style='width:120px; height:90px; object-fit:contain; border-radius:14px;'>
+          <img src='${
+            empresa.imagen_path ||
+            "../assets/img/JS_PIONERS_LOGO-removebg-preview.png"
+          }' alt='${
+        empresa.name
+      }' style='width:120px; height:90px; object-fit:contain; border-radius:14px;'>
           <div>
-            <h3>${empresa.nombre}</h3>
-            <p>${empresa.descripcion}</p>
+            <h3>${empresa.name}</h3>
+            <p>${empresa.description}</p>
             <ul style='list-style:none; padding:0; margin:0;'>
-              <li><strong>Dueño:</strong> ${empresa.dueño}</li>
-              <li><strong>Dirección:</strong> ${empresa.direccion}</li>
-              <li><strong>Teléfono:</strong> ${empresa.telefono}</li>
-              <li><strong>Email:</strong> ${empresa.email}</li>
+              <li><strong>Dueño:</strong> ${empresa.owner || "-"}</li>
+              <li><strong>Dirección:</strong> ${empresa.direccion || "-"}</li>
+              <li><strong>Email:</strong> ${empresa.email || "-"}</li>
             </ul>
           </div>
         </div>
@@ -174,6 +136,5 @@ window.addEventListener("DOMContentLoaded", () => {
     contenedor.appendChild(msg);
   }
 
-  // Agrega el contenedor al main
   main.appendChild(contenedor);
 });

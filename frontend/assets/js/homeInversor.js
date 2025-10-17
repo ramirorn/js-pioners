@@ -1,53 +1,49 @@
-const empresasEjemplo = [
-  {
-    id: 1,
-    nombre: "RocketJS",
-    descripcion: "Plataforma de lanzamientos para proyectos JavaScript.",
-    imagen: "../assets/img/JS_PIONERS_LOGO-removebg-preview.png",
-  },
-  {
-    id: 2,
-    nombre: "PixelCode",
-    descripcion: "Desarrollo de videojuegos retro con JS.",
-    imagen: "../assets/img/JS_PIONERS_LOGO-removebg-preview.png",
-  },
-  {
-    id: 3,
-    nombre: "GreenTech",
-    descripcion: "Soluciones ecológicas con tecnología web.",
-    imagen: "../assets/img/JS_PIONERS_LOGO-removebg-preview.png",
-  },
-  {
-    id: 4,
-    nombre: "EduJS",
-    descripcion: "Educación online para programadores JS.",
-    imagen: "../assets/img/JS_PIONERS_LOGO-removebg-preview.png",
-  },
-  {
-    id: 5,
-    nombre: "FinanCode",
-    descripcion: "Fintech para gestión financiera en startups.",
-    imagen: "../assets/img/JS_PIONERS_LOGO-removebg-preview.png",
-  },
-];
+// Reemplazo: Traer proyectos reales del backend para el inversor
 async function fetchEmpresas() {
-  // Devuelve el array local de empresas (sin backend)
-  return empresasEjemplo;
+  try {
+    const req = await fetch("http://localhost:4000/api/projects", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-type": "application/json",
+      },
+    });
+    const res = await req.json();
+    if (!req.ok) {
+      alert(res.msg || "Error al obtener proyectos");
+      return [];
+    }
+    // Adaptar los datos si es necesario para el render
+    return res.data || [];
+  } catch (error) {
+    alert("Error de conexión al cargar proyectos");
+    return [];
+  }
 }
 
 function renderCards(empresas) {
   // Limpia el stack y agrega una tarjeta por cada empresa
   cardStack.innerHTML = "";
-  empresas.forEach((empresa, idx) => {
+  // Filtra solo empresas con _id válido
+  const empresasValidas = empresas.filter((e) => e._id);
+  if (empresasValidas.length === 0) {
+    mostrarCardFinal();
+    return;
+  }
+  likeBtn.disabled = false;
+  dislikeBtn.disabled = false;
+  empresasValidas.forEach((empresa, idx) => {
     // Crea el elemento de la tarjeta
     const card = document.createElement("div");
     card.className = "swipe-card";
-    card.dataset.id = empresa.id || idx;
+    card.dataset.id = empresa._id;
     // Inserta imagen, nombre y descripción
     card.innerHTML = `
-      <img src="${empresa.imagen}" alt="logo" style="width:90px; margin-bottom:12px;">
-      <h4>${empresa.nombre}</h4>
-      <p>${empresa.descripcion}</p>
+      <img src="${
+        empresa.imagen_path ||
+        "../assets/img/JS_PIONERS_LOGO-removebg-preview.png"
+      }" alt="logo" style="width:90px; margin-bottom:12px;">
+      <h4>${empresa.name}</h4>
+      <p>${empresa.description}</p>
     `;
     cardStack.appendChild(card);
   });
@@ -95,6 +91,9 @@ function mostrarCardFinal() {
     <p>Vuelve más tarde para ver nuevos proyectos.</p>
   `;
   cardStack.appendChild(card);
+  // Deshabilita los botones de like/dislike
+  likeBtn.disabled = true;
+  dislikeBtn.disabled = true;
 }
 
 function handleDragStart(e) {
@@ -129,11 +128,9 @@ function handleDragEnd(e) {
   if (deltaX > 120) {
     // Swipe a la derecha: like
     removeCard(currentCard, "liked");
-    // Aquí podrías guardar el like
   } else if (deltaX < -120) {
     // Swipe a la izquierda: dislike
     removeCard(currentCard, "disliked");
-    // Aquí podrías guardar el dislike
   }
 }
 
@@ -146,11 +143,55 @@ cardStack.addEventListener("mouseup", handleDragEnd);
 cardStack.addEventListener("touchend", handleDragEnd);
 
 // Eventos para los botones de like/dislike
-likeBtn.addEventListener("click", () => {
+likeBtn.addEventListener("click", async () => {
   const card = getTopCard();
-  if (card) removeCard(card, "liked");
+  if (card) {
+    const projectId = card.dataset.id;
+    // Fetch para registrar interés (like)
+    try {
+      const req = await fetch(
+        `http://localhost:4000/api/projects/interesado/${projectId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      const res = await req.json();
+      if (!req.ok) {
+        alert(res.msg || "Error al registrar interés");
+      }
+    } catch (error) {
+      alert("Error de conexión al registrar interés");
+    }
+    removeCard(card, "liked");
+  }
 });
-dislikeBtn.addEventListener("click", () => {
+dislikeBtn.addEventListener("click", async () => {
   const card = getTopCard();
-  if (card) removeCard(card, "disliked");
+  if (card) {
+    const projectId = card.dataset.id;
+    // Fetch para registrar no interés (dislike)
+    try {
+      const req = await fetch(
+        `http://localhost:4000/api/projects/no_interesado/${projectId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      const res = await req.json();
+      if (!req.ok) {
+        alert(res.msg || "Error al registrar no interés");
+      }
+    } catch (error) {
+      alert("Error de conexión al registrar no interés");
+    }
+    removeCard(card, "disliked");
+  }
 });

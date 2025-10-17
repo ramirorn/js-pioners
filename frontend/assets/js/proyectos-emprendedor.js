@@ -71,7 +71,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       <span style="display:inline-block; margin-top:8px; padding:4px 12px; border-radius:8px; font-size:0.95em; background:${
         proyecto.estado === "Aprobado" ? "#d1e7dd" : "#f8d7da"
       }; color:${proyecto.estado === "Aprobado" ? "#0f5132" : "#842029"};">
-        ${proyecto.estado === "Aprobado" ? "Aprobado" : "Pendiente"}
+        ${proyecto.estado}
       </span>
     `;
 

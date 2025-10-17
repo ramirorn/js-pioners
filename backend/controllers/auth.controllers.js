@@ -46,6 +46,25 @@ export const register = async (req, res) => {
         data: newInvestor,
       });
     }
+
+    if (role === "Admin") {
+      const { username, email, password, dni, role } = req.body;
+
+      const hashedPassword = await hashPassword(password);
+      const admin = new UserModel({
+        username,
+        email,
+        password: hashedPassword,
+        role,
+        dni,
+      });
+      await admin.save();
+      return res.status(201).json({
+        ok: true,
+        msg: "Administrador registrado con exito",
+        data: admin,
+      });
+    }
   } catch (error) {
     console.error("Error en registro:", error);
     return res.status(500).json({

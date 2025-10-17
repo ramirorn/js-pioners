@@ -39,6 +39,12 @@ const ProjectSchema = new Schema(
         ref: "User",
       },
     ],
+    no_interesado: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
     revisado: {
       type: Boolean,
       default: false,

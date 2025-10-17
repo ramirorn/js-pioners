@@ -11,7 +11,11 @@ export const authMiddleware = (req, res, next) => {
       return res.status(401).json({ msg: "Token no proporcionado" });
     }
     const decoded = verifyToken(token);
-    req.user = decoded;
+    // Asegura la estructura esperada por los controladores
+    if (!decoded || !decoded.userId) {
+      return res.status(401).json({ msg: "Token inválido o sin usuario" });
+    }
+    req.user = { payload: { userId: decoded.userId } };
     next();
   } catch (error) {
     console.log(error.message);
