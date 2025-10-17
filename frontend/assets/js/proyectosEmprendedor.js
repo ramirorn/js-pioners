@@ -1,52 +1,58 @@
-const empresasEjemplo = [
-  {
-    id: 1,
-    nombre: "RocketJS",
-    descripcion: "Plataforma de lanzamientos para proyectos JavaScript.",
-    imagen: "../assets/img/JS_PIONERS_LOGO-removebg-preview.png",
-    intersado: false, // No guardado
-    direccion: "Calle Falsa 123",
-    telefono: "555-1234",
-    email: "juan.perez@example.com",
-  },
-  {
-    id: 2,
-    nombre: "PixelCode",
-    descripcion: "Desarrollo de videojuegos retro con JS.",
-    imagen: "../assets/img/JS_PIONERS_LOGO-removebg-preview.png",
-    interado: false,
-    direccion: "Avenida Siempre Viva 456",
-    telefono: "555-5678",
-    email: "ana.gomez@example.com",
-  },
-  {
-    id: 3,
-    nombre: "GreenTech",
-    descripcion: "Soluciones ecológicas con tecnología web.",
-    imagen: "../assets/img/JS_PIONERS_LOGO-removebg-preview.png",
-    interado: true, // Guardado
-    direccion: "Boulevard Verde 789",
-    telefono: "555-9012",
-    email: "carlos.ruiz@example.com",
-  },
-  {
-    id: 4,
-    nombre: "EduJS",
-    descripcion: "Educación online para programadores JS.",
-    imagen: "../assets/img/JS_PIONERS_LOGO-removebg-preview.png",
-    interado: false,
-    direccion: "Calle del Saber 101",
-    telefono: "555-3456",
-    email: "laura.martinez@example.com",
-  },
-  {
-    id: 5,
-    nombre: "FinanCode",
-    descripcion: "Fintech para gestión financiera en startups.",
-    imagen: "../assets/img/JS_PIONERS_LOGO-removebg-preview.png",
-    interado: true,
-    direccion: "Avenida Financiera 202",
-    telefono: "555-7890",
-    email: "miguel.torres@example.com",
-  },
-];
+// Script para guardar un emprendimiento desde el formulario
+
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.querySelector("form");
+  if (!form) return;
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    // Obtener valores del formulario
+    const name = document.getElementById("nombre").value;
+    const description = document.getElementById("descripcion").value;
+    const direccion = document.getElementById("direccion").value;
+    const telefono = document.getElementById("telefono").value;
+    const aplicacion_web_url = document.getElementById("url").value;
+    const imagenInput = document.getElementById("imagen");
+    let imagen_path = "";
+
+    // Si hay imagen, tomar el nombre del archivo (para demo)
+    if (imagenInput && imagenInput.files.length > 0) {
+      imagen_path = imagenInput.files[0].name;
+    }
+
+    // Construir el objeto para el modelo Project
+    const data = {
+      name,
+      description,
+      direccion,
+      aplicacion_web_url,
+      imagen_path,
+      telefono, // Si tu modelo lo necesita, agrégalo
+      // owner: ... // Aquí deberías poner el id del usuario loggeado
+    };
+
+    try {
+      const req = await fetch("http://localhost:4000/api/projects", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      const res = await req.json();
+      console.log(res);
+
+      if (req.ok) {
+        alert(res.message || "Emprendimiento guardado con éxito");
+        // window.location.replace("proyectos-emprendedor.html");
+      } else {
+        alert(res.message || "Error al guardar el emprendimiento");
+      }
+    } catch (error) {
+      alert("Error de conexión al guardar el emprendimiento");
+    }
+  });
+});

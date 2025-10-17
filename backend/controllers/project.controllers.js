@@ -2,13 +2,18 @@
 import { ProjectModel } from "../models/project.model.js";
 
 export const createProject = async (req, res) => {
+  const { userId } = req.user.payload;
+
   try {
     // Datos que pasaron las validaciones
     // const validatedData = matchedData(req);
 
     // Creacion del proyecto
-    const project = await ProjectModel.create(req.body);
-
+    const project = await ProjectModel.create({
+      ...req.body,
+      owner: userId,
+    });
+    console.log(project);
     // Respuesta
     res.status(201).json({
       ok: true,
@@ -16,6 +21,25 @@ export const createProject = async (req, res) => {
       data: project,
     });
   } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      ok: false,
+      msg: "Error interno del servidor",
+    });
+  }
+};
+
+export const getMyProjects = async (req, res) => {
+  const { userId } = req.user.payload;
+  try {
+    const projects = await ProjectModel.find({ owner: userId });
+    res.status(200).json({
+      ok: true,
+      msg: "Proyectos obtenidos con éxito",
+      data: projects,
+    });
+  } catch (error) {
+    console.error(error);
     res.status(500).json({
       ok: false,
       msg: "Error interno del servidor",

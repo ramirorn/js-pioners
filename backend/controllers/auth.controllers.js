@@ -29,7 +29,7 @@ export const register = async (req, res) => {
       const { username, email, password, nombre, apellido, dni, empresa } =
         req.body;
       const hashedPassword = await hashPassword(password);
-      const newInvestor = new InvestorModel({
+      const newInvestor = new UserModel({
         username,
         email,
         password: hashedPassword,

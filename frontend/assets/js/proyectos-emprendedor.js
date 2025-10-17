@@ -1,53 +1,7 @@
 // =============================
-// Array de ejemplo de emprendimientos del emprendedor
+// Fetch y renderizado de proyectos del emprendedor
 // =============================
-const proyectosEmprendedor = [
-  {
-    id: 1,
-    nombre: "RocketJS",
-    descripcion: "Plataforma de lanzamientos para proyectos JavaScript.",
-    imagen: "../assets/img/JS_PIONERS_LOGO-removebg-preview.png",
-    direccion: "Calle Falsa 123",
-    telefono: "555-1234",
-    email: "juan.perez@example.com",
-    aprobado: true, // Proyecto aprobado
-  },
-  {
-    id: 2,
-    nombre: "PixelCode",
-    descripcion: "Desarrollo de videojuegos retro con JS.",
-    imagen: "../assets/img/JS_PIONERS_LOGO-removebg-preview.png",
-    direccion: "Avenida Siempre Viva 456",
-    telefono: "555-5678",
-    email: "ana.gomez@example.com",
-    aprobado: false, // Proyecto pendiente
-  },
-  {
-    id: 3,
-    nombre: "GreenTech",
-    descripcion: "Soluciones ecológicas con tecnología web.",
-    imagen: "../assets/img/JS_PIONERS_LOGO-removebg-preview.png",
-    direccion: "Boulevard Verde 789",
-    telefono: "555-9012",
-    email: "carlos.ruiz@example.com",
-    aprobado: true,
-  },
-  {
-    id: 4,
-    nombre: "EduJS",
-    descripcion: "Educación online para programadores JS.",
-    imagen: "../assets/img/JS_PIONERS_LOGO-removebg-preview.png",
-    direccion: "Calle del Saber 101",
-    telefono: "555-3456",
-    email: "laura.martinez@example.com",
-    aprobado: false,
-  },
-];
-
-// =============================
-// Renderizar los proyectos en la vista
-// =============================
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("DOMContentLoaded", async () => {
   const main = document.querySelector("main");
   if (!main) return;
 
@@ -59,7 +13,32 @@ window.addEventListener("DOMContentLoaded", () => {
   contenedor.style.margin = "32px auto";
   contenedor.style.maxWidth = "600px";
 
-  proyectosEmprendedor.forEach((proyecto) => {
+  // Fetch de proyectos
+  let proyectos = [];
+  try {
+    const req = await fetch("http://localhost:4000/api/projects/my", {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    const res = await req.json();
+    if (req.ok && res.data) {
+      proyectos = res.data;
+    }
+  } catch (error) {
+    // Si falla el fetch, muestra mensaje
+    const msg = document.createElement("p");
+    msg.textContent = "No se pudieron cargar los proyectos.";
+    msg.style.textAlign = "center";
+    msg.style.marginTop = "48px";
+    contenedor.appendChild(msg);
+    main.appendChild(contenedor);
+    return;
+  }
+
+  proyectos.forEach((proyecto) => {
     // Card visual tipo lista horizontal
     const card = document.createElement("div");
     card.style.display = "flex";
@@ -74,8 +53,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
     // Imagen del emprendimiento
     const img = document.createElement("img");
-    img.src = proyecto.imagen;
-    img.alt = proyecto.nombre;
+    img.src =
+      proyecto.imagen_path ||
+      "../assets/img/JS_PIONERS_LOGO-removebg-preview.png";
+    img.alt = proyecto.name;
     img.style.width = "90px";
     img.style.height = "70px";
     img.style.objectFit = "contain";
@@ -85,12 +66,12 @@ window.addEventListener("DOMContentLoaded", () => {
     const info = document.createElement("div");
     info.style.flex = "1";
     info.innerHTML = `
-      <h3 style="margin:0 0 8px 0;">${proyecto.nombre}</h3>
-      <p style="margin:0;">${proyecto.descripcion}</p>
+      <h3 style="margin:0 0 8px 0;">${proyecto.name}</h3>
+      <p style="margin:0;">${proyecto.description}</p>
       <span style="display:inline-block; margin-top:8px; padding:4px 12px; border-radius:8px; font-size:0.95em; background:${
-        proyecto.aprobado ? "#d1e7dd" : "#f8d7da"
-      }; color:${proyecto.aprobado ? "#0f5132" : "#842029"};">
-        ${proyecto.aprobado ? "Aprobado" : "Pendiente"}
+        proyecto.estado === "Aprobado" ? "#d1e7dd" : "#f8d7da"
+      }; color:${proyecto.estado === "Aprobado" ? "#0f5132" : "#842029"};">
+        ${proyecto.estado === "Aprobado" ? "Aprobado" : "Pendiente"}
       </span>
     `;
 
@@ -131,20 +112,23 @@ window.addEventListener("DOMContentLoaded", () => {
       if (!modalBody) return;
       modalBody.innerHTML = `
         <div style='display:flex; gap:32px; align-items:center;'>
-          <img src='${proyecto.imagen}' alt='${
-        proyecto.nombre
+          <img src='${
+            proyecto.imagen_path ||
+            "../assets/img/JS_PIONERS_LOGO-removebg-preview.png"
+          }' alt='${
+        proyecto.name
       }' style='width:120px; height:90px; object-fit:contain; border-radius:14px;'>
           <div>
-            <h3>${proyecto.nombre}</h3>
-            <p>${proyecto.descripcion}</p>
+            <h3>${proyecto.name}</h3>
+            <p>${proyecto.description}</p>
             <ul style='list-style:none; padding:0; margin:0;'>
               <li><strong>Dirección:</strong> ${proyecto.direccion}</li>
-              <li><strong>Teléfono:</strong> ${proyecto.telefono}</li>
-              <li><strong>Email:</strong> ${proyecto.email}</li>
               <li><strong>Estado:</strong> <span style='padding:2px 10px; border-radius:6px; background:${
-                proyecto.aprobado ? "#d1e7dd" : "#f8d7da"
-              }; color:${proyecto.aprobado ? "#0f5132" : "#842029"};'>${
-        proyecto.aprobado ? "Aprobado" : "Pendiente"
+                proyecto.estado === "Aprobado" ? "#d1e7dd" : "#f8d7da"
+              }; color:${
+        proyecto.estado === "Aprobado" ? "#0f5132" : "#842029"
+      };'>${
+        proyecto.estado === "Aprobado" ? "Aprobado" : "Pendiente"
       }</span></li>
             </ul>
           </div>
@@ -157,7 +141,7 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   // Si no hay proyectos, muestra un mensaje amigable
-  if (proyectosEmprendedor.length === 0) {
+  if (proyectos.length === 0) {
     const msg = document.createElement("p");
     msg.textContent = "No tienes emprendimientos creados.";
     msg.style.textAlign = "center";
